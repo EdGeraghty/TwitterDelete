@@ -10,14 +10,12 @@
 	];
 
 	$getTwitter = new TwitterAPIExchange($settings);
-	$postTwitter = new TwitterApiExchange($settings);
+	$postTwitter = new TwitterAPIExchange($settings);
 
-	//$deleteFrom = date('Y-m-d', (time()-(60*60*24*$_NUMDAYS)));
-	$deleteFrom = "2011-02-25";
+	$deleteFrom = date('Y-m-d', (time()-(60*60*24*$_NUMDAYS)));
 
 	while (strtotime($deleteFrom) < (time()-(60*60*24*$_NUMDAYS))) {
-		//$url = "https://piratenproxy.nl/twitter.com/i/search/timeline?f=realtime&q=from:{$_USER}%20until:{$deleteFrom}&src=typd";
-		$url = "http://boomproxy.com/browse.php?u=twitter.com/i/search/timeline?f=realtime&q=from:{$_USER}%20until:{$deleteFrom}&src=typd";
+		$url = "https://twitter.com/i/search/timeline?f=realtime&q=from:{$_USER}%20until:{$deleteFrom}&src=typd";
 		$json = file_get_contents($url);
 		$boom = explode('href=\"\/' . $_USER . '\/status\/', $json);
 		for ($i = 0; $i < count($boom); ++$i) {
@@ -27,7 +25,7 @@
 
 		deleteMessages($boom);
 
-		$deleteFrom = date('Y-m-d', strtotime('+1 day', strtotime($deleteFrom)));
+		$deleteFrom = date('Y-m-d', strtotime('-1 day', strtotime($deleteFrom)));
 		print "{$deleteFrom}\n";
 	}
 
